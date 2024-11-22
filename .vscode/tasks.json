@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "tasks": [
+    {
+      "label": "Build (Debug)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "gcc $(pkg-config --cflags gtk4) -g -o Debug/Program Program.c $(pkg-config --libs gtk4)"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"],
+      "detail": "Build GTK Application (Debug)"
+    },
+    {
+      "label": "Build (Release)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "gcc $(pkg-config --cflags gtk4) -O2 -o Release/Program Program.c $(pkg-config --libs gtk4)"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": ["$gcc"],
+      "detail": "Build GTK Application (Release)"
+    }
+  ]
+}
