@@ -10,6 +10,7 @@
 #define ERROR_LENGTH 256
 
 typedef struct {
+	int id;
     char name[NAME_LENGTH];
     char phone[PHONE_LENGTH];
 } Contact;
@@ -20,6 +21,7 @@ typedef struct {
 } CMSResult;
 
 CMSResult addContact(const char* name, const char* phone);
+CMSResult removeContact(int id);
 
 const Contact* getContacts();
 int getContactCount();

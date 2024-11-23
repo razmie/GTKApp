@@ -55,8 +55,27 @@ CMSResult addContact(const char* name, const char* phone) {
 	strcpy(newContact.phone, phone);
 	newContact.phone[strcspn(phone, "\n")] = 0; // Remove trailing newline
 
+	newContact.id = contactCount;
+
     contacts[contactCount++] = newContact;
     printf("Contact added successfully.\n");
+
+	return resultSuccess();
+}
+
+CMSResult removeContact(int id) {
+	if (id < 0 || id >= contactCount) {
+		return resultFail("Invalid contact ID.\n");
+	}
+
+	// Shift all contants down staring from the index of the contact to be removed.
+	for (int i = id; i < contactCount - 1; i++) {
+		contacts[i] = contacts[i + 1];
+		contacts[i].id = i;
+	}
+
+	contactCount--;
+	printf("Contact removed successfully.\n");
 
 	return resultSuccess();
 }
