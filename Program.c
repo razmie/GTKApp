@@ -29,13 +29,13 @@ static void activate(GtkApplication *app, gpointer user_data)
 
     // Add pages to the stack
 
-    GtkWidget *page1 = create_page1();
+    GtkWidget *page1 = createPage1();
     gtk_stack_add_titled(GTK_STACK(stack), page1, "page1", "Page 1");
 
-    GtkWidget *page2 = create_page2();
+    GtkWidget *page2 = createPage2();
     gtk_stack_add_titled(GTK_STACK(stack), page2, "page2", "Page 2");
 
-    GtkWidget *page3 = create_page3();
+    GtkWidget *page3 = createPage3();
     gtk_stack_add_titled(GTK_STACK(stack), page3, "page3", "Page 3");
 
     // Append the stack to the vbox

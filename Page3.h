@@ -3,6 +3,6 @@
 
 #include <Gtk/Gtk.h>
 
-GtkWidget* create_page3();
+GtkWidget* createPage3();
 
 #endif // PAGE3_H
