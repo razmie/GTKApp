@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+		"gtk.h": "c",
+		"page1.h": "c",
+		"page2.h": "c"
+	}
+}

@@ -1,41 +1,59 @@
 #include <gtk/gtk.h>
+#include "Page1.h"
+#include "Page2.h"
+#include "Page3.h"
 
-static void
-print_hello (GtkWidget *widget,
-             gpointer   data)
+static void activate(GtkApplication *app, gpointer user_data)
 {
-  g_print ("Hello World\n");
+    GtkWidget *window;
+
+	// Create a new window.
+    window = gtk_application_window_new(app);
+    gtk_window_set_title(GTK_WINDOW(window), "Window with Stack");
+
+	// Set the window size.
+    gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
+
+	// A vertical container box splits the window into two parts: the switcher (top) and the page area (bottom).
+    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_window_set_child(GTK_WINDOW(window), vbox);
+
+    // Holds the different pages (e.g., page1, page2) to switch between them.
+    GtkWidget *stack = gtk_stack_new();
+    gtk_stack_set_transition_type(GTK_STACK(stack), GTK_STACK_TRANSITION_TYPE_NONE);
+
+    // Displays buttons for switching between the pages in the GtkStack.
+    GtkWidget *stack_switcher = gtk_stack_switcher_new();
+    gtk_stack_switcher_set_stack(GTK_STACK_SWITCHER(stack_switcher), GTK_STACK(stack));
+    gtk_box_append(GTK_BOX(vbox), stack_switcher);
+
+    // Add pages to the stack
+
+    GtkWidget *page1 = create_page1();
+    gtk_stack_add_titled(GTK_STACK(stack), page1, "page1", "Page 1");
+
+    GtkWidget *page2 = create_page2();
+    gtk_stack_add_titled(GTK_STACK(stack), page2, "page2", "Page 2");
+
+    GtkWidget *page3 = create_page3();
+    gtk_stack_add_titled(GTK_STACK(stack), page3, "page3", "Page 3");
+
+    // Append the stack to the vbox
+    gtk_box_append(GTK_BOX(vbox), stack);
+
+    gtk_window_present(GTK_WINDOW(window));
 }
 
-static void
-activate (GtkApplication *app,
-          gpointer        user_data)
+int main(int argc, char **argv)
 {
-  GtkWidget *window;
-  GtkWidget *button;
+	GtkApplication *app;
+	int status;
 
-  window = gtk_application_window_new (app);
-  gtk_window_set_title (GTK_WINDOW (window), "Hello");
-  gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
+	app = gtk_application_new("org.gtk.cms", G_APPLICATION_DEFAULT_FLAGS);
+	g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
 
-  button = gtk_button_new_with_label ("Hello World");
-  g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
-  gtk_window_set_child (GTK_WINDOW (window), button);
+	status = g_application_run(G_APPLICATION(app), argc, argv);
+	g_object_unref(app);
 
-  gtk_window_present (GTK_WINDOW (window));
-}
-
-int
-main (int    argc,
-      char **argv)
-{
-  GtkApplication *app;
-  int status;
-
-  app = gtk_application_new ("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
-  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-  status = g_application_run (G_APPLICATION (app), argc, argv);
-  g_object_unref (app);
-
-  return status;
+	return status;
 }

@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "tasks": [
     {
       "label": "Build (Debug)",
@@ -7,14 +7,14 @@
       "command": "bash",
       "args": [
         "-c",
-        "gcc $(pkg-config --cflags gtk4) -g -o Debug/Program Program.c $(pkg-config --libs gtk4)"
+        "gcc $(pkg-config --cflags gtk4) -g -o Debug/Program *.c $(pkg-config --libs gtk4) -Wno-deprecated-declarations"
       ],
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "problemMatcher": ["$gcc"],
-      "detail": "Build GTK Application (Debug)"
+      "detail": "Build GTK App (Debug)"
     },
     {
       "label": "Build (Release)",
@@ -22,14 +22,14 @@
       "command": "bash",
       "args": [
         "-c",
-        "gcc $(pkg-config --cflags gtk4) -O2 -o Release/Program Program.c $(pkg-config --libs gtk4)"
+        "gcc $(pkg-config --cflags gtk4) -O2 -o Release/Program *.c $(pkg-config --libs gtk4) -Wno-deprecated-declarations"
       ],
       "group": {
         "kind": "build",
         "isDefault": false
       },
       "problemMatcher": ["$gcc"],
-      "detail": "Build GTK Application (Release)"
+      "detail": "Build GTK App (Release)"
     }
   ]
 }
