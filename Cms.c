@@ -14,7 +14,7 @@ CMSResult resultSuccess() {
 }
 
 CMSResult resultFail(const char* error) {
-	printf(error);
+	printf("%s", error);
 
 	CMSResult result;
 	result.success = 0;

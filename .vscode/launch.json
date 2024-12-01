@@ -2,10 +2,10 @@
     "version": "1.0.0",
     "configurations": [
       {
-        "name": "Debug",
+        "name": "Debug Windows",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/Debug/Program",
+        "program": "${workspaceFolder}/windows/debug/program",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
@@ -20,13 +20,13 @@
             "ignoreFailures": true
           }
         ],
-        "preLaunchTask": "Build (Debug)"
+        "preLaunchTask": "Build Windows (Debug)"
       },
       {
-        "name": "Release",
+        "name": "Release Windows",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/Release/Program",
+        "program": "${workspaceFolder}/windows/release/program",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
@@ -34,7 +34,16 @@
         "externalConsole": false,
         "MIMode": "gdb",
         "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
-        "preLaunchTask": "Build (Release)"
+        "preLaunchTask": "Build Windows (Release)"›
+      },
+      {
+        "name": "Debug Mac",
+        "type": "lldb",
+        "request": "launch",
+        "program": "${workspaceFolder}/mac/debug/program",
+        "args": [],
+        "cwd": "${workspaceFolder}",
+        "preLaunchTask": "Build Mac (Debug)"
       }
     ]
   }

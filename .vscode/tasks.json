@@ -2,34 +2,49 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build (Debug)",
+      "label": "Build Windows (Debug)",
       "type": "shell",
       "command": "bash",
       "args": [
         "-c",
-        "gcc $(pkg-config --cflags gtk4) -g -o Debug/Program *.c $(pkg-config --libs gtk4) -Wno-deprecated-declarations"
+        "gcc $(pkg-config --cflags gtk4) -g -o windows/debug/program *.c $(pkg-config --libs gtk4) -Wno-deprecated-declarations"
       ],
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "problemMatcher": ["$gcc"],
-      "detail": "Build GTK App (Debug)"
+      "detail": "Build GTK App Windows (Debug)"
     },
     {
-      "label": "Build (Release)",
+      "label": "Build Windows (Release)",
       "type": "shell",
       "command": "bash",
       "args": [
         "-c",
-        "gcc $(pkg-config --cflags gtk4) -O2 -o Release/Program *.c $(pkg-config --libs gtk4) -Wno-deprecated-declarations"
+        "gcc $(pkg-config --cflags gtk4) -O2 -o windows/release/program *.c $(pkg-config --libs gtk4) -Wno-deprecated-declarations"
       ],
       "group": {
         "kind": "build",
         "isDefault": false
       },
       "problemMatcher": ["$gcc"],
-      "detail": "Build GTK App (Release)"
-    }
+      "detail": "Build GTK App Windows (Release)"
+    },
+    {
+      "label": "Build Mac (Debug)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "gcc $(pkg-config --cflags gtk4) -g -o mac/debug/program *.c $(pkg-config --libs gtk4) -Wno-deprecated-declarations"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"],
+      "detail": "Build GTK App Mac (Debug)"
+    },
   ]
 }

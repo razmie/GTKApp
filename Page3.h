@@ -4,7 +4,7 @@
 
 // Includes the GTK library header to provide access to GTK types and functions,
 // required for creating and managing GTK widgets.
-#include <Gtk/Gtk.h>
+#include <gtk/gtk.h>
 
 GtkWidget* createPage3();
 
