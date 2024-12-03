@@ -82,7 +82,7 @@ void addPageContent() {
         const Contact contact = contacts[i];
 
         // Skip contacts that don't match the search.
-        if (currentSearch[0] != '\0' && strcasestr(contact.name, currentSearch) == NULL) {
+        if (currentSearch[0] != '\0' && strstr(contact.name, currentSearch) == NULL) {
             continue;
         }
 
