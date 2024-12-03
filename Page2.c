@@ -7,14 +7,20 @@ GtkWidget *rootBox = NULL;
 // Global variable to hold the content box where the page content will be dynamically added.
 GtkWidget *contentBox = NULL;
 
-// Callback function to handle deletion of a row after confirmation
+// Global variable to hold the search entry widget.
+GtkWidget *searchEntry = NULL;
+
+// Global variable to store the current search text.
+char currentSearch[256] = "";
+
+// Callback function to handle deletion of a row after confirmation.
 void confirmDelete(GtkDialog *dialog, int response_id, gpointer user_data) {
     if (response_id == GTK_RESPONSE_YES) {
-        // Retrieve the row widget and its associated ID
+        // Retrieve the row widget and its associated ID.
         GtkWidget *row = GTK_WIDGET(user_data);
         int contact_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(row), "contact_id"));
 
-        // Call removeContact with the ID
+        // Call removeContact with the ID.
         CMSResult result = removeContact(contact_id);
 
         if (result.success) {
@@ -24,7 +30,7 @@ void confirmDelete(GtkDialog *dialog, int response_id, gpointer user_data) {
         }
     }
 
-    // Destroy the confirmation dialog to clean up
+    // Destroy the confirmation dialog to clean up.
     gtk_window_destroy(GTK_WINDOW(dialog));
 }
 
@@ -75,10 +81,15 @@ void addPageContent() {
         // Retrieve the current contact.
         const Contact contact = contacts[i];
 
+        // Skip contacts that don't match the search.
+        if (currentSearch[0] != '\0' && strcasestr(contact.name, currentSearch) == NULL) {
+            continue;
+        }
+
         // Create a horizontal box for the name, phone number, and delete button.
         GtkWidget *row = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
 
-        // Create a label to display the contact's id.
+        // Create a label to display the contact's ID.
         char id_str[10];
         snprintf(id_str, sizeof(id_str), "%d", contact.id);
         GtkWidget *id_label = gtk_label_new(id_str);
@@ -90,17 +101,17 @@ void addPageContent() {
         GtkWidget *phone_label = gtk_label_new(contact.phone);
 
         // Align the labels to the start (left).
-		gtk_widget_set_halign(id_label, GTK_ALIGN_START);
+        gtk_widget_set_halign(id_label, GTK_ALIGN_START);
         gtk_widget_set_halign(name_label, GTK_ALIGN_START);
         gtk_widget_set_halign(phone_label, GTK_ALIGN_START);
 
         // Add the labels to the horizontal box.
-		gtk_box_append(GTK_BOX(row), id_label);
+        gtk_box_append(GTK_BOX(row), id_label);
         gtk_box_append(GTK_BOX(row), name_label);
         gtk_box_append(GTK_BOX(row), phone_label);
 
-		// Associate the contact's ID with the row widget
-		g_object_set_data(G_OBJECT(row), "contact_id", GINT_TO_POINTER(contact.id));
+        // Associate the contact's ID with the row widget.
+        g_object_set_data(G_OBJECT(row), "contact_id", GINT_TO_POINTER(contact.id));
 
         // Create a "Delete" button for the contact.
         GtkWidget *delete_button = gtk_button_new_with_label("Delete");
@@ -122,10 +133,46 @@ void addPageContent() {
     gtk_box_append(GTK_BOX(contentBox), scrolled_window);
 }
 
+// Callback function to handle the search action.
+void onFilterButtonClicked(GtkButton *button, gpointer user_data) {
+    // Get the text from the search entry widget.
+    const char *search_text = gtk_editable_get_text(GTK_EDITABLE(searchEntry));
+
+    // Update the global search.
+    strncpy(currentSearch, search_text, sizeof(currentSearch) - 1);
+    currentSearch[sizeof(currentSearch) - 1] = '\0';
+
+    // Update the page content with the search applied.
+    updatePage2();
+}
+
 // Function to create Page2 and its layout.
 GtkWidget* createPage2() {
     // Create the root vertical box to hold the content.
     rootBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
+    // Create a horizontal box for the search entry and button.
+    GtkWidget *search_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+    gtk_widget_set_margin_start(search_box, 10);
+    gtk_widget_set_margin_end(search_box, 10);
+    gtk_widget_set_margin_top(search_box, 10);
+    gtk_widget_set_margin_bottom(search_box, 10);
+
+    // Create the search entry widget.
+    searchEntry = gtk_entry_new();
+
+    // Create a "Filter" button.
+    GtkWidget *search_button = gtk_button_new_with_label("Search");
+
+    // Connect the button's clicked signal to the onFilterButtonClicked function.
+    g_signal_connect(search_button, "clicked", G_CALLBACK(onFilterButtonClicked), NULL);
+
+    // Add the search entry and button to the search box.
+    gtk_box_append(GTK_BOX(search_box), searchEntry);
+    gtk_box_append(GTK_BOX(search_box), search_button);
+
+    // Add the search box to the root box.
+    gtk_box_append(GTK_BOX(rootBox), search_box);
 
     // Create the content box to hold dynamic content.
     contentBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
